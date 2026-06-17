@@ -3,3 +3,5 @@
 http://serv30.vintera.tv:8081/sochi/sochi_stream/chunks.m3u8
 #EXTINF:-1 ,Архыз 24
 http://live.mediacdn.ru/sr1/arhis24/playlist.m3u8
+#EXTINF:-1 tvg-name="Hotel Info",Hotel Info
+https://github.com/nzavedeev/mytvlist/blob/main/presentation_30s.mp4
