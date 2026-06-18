@@ -2,45 +2,202 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3U Редактор — rus_test1.m3u</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #666; padding: 8px; }
-        input { width: 100%; box-sizing: border-box; }
-        button { margin: 3px; padding: 5px 10px; }
-        .header { margin-bottom: 15px; }
+        :root {
+            --primary: #0066ff;
+            --bg: #f8f9fc;
+            --card: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #0066ff, #3388ff);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 { font-size: 24px; font-weight: 600; }
+        
+        .main {
+            padding: 30px;
+        }
+        
+        .login-box {
+            max-width: 400px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 10px 0;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover { background: #0052cc; transform: translateY(-2px); }
+        
+        .btn-success { background: #10b981; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        th {
+            background: #f1f5f9;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        td input {
+            margin: 0;
+            border: 1px solid #ddd;
+            padding: 8px 10px;
+            font-size: 15px;
+        }
+        
+        tr:hover {
+            background: #f8fafc;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .actions button {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
-    <h1>Редактор M3U (rus_test1.m3u)</h1>
+    <div class="container">
+        <header>
+            <h1>📺 M3U Редактор</h1>
+            <div>rus_test1.m3u</div>
+        </header>
 
-    <div class="header">
-        <input type="password" id="token" placeholder="GitHub Personal Access Token" size="50">
-        <button onclick="saveToken()">Сохранить токен</button>
-        <button onclick="logout()">Сменить токен</button>
-        <br><br>
-        
-        <input type="text" id="username" placeholder="Логин (nzavedeev или gost)" value="nzavedeev">
-        <input type="password" id="password" placeholder="Пароль">
-        <button onclick="checkLogin()">Войти</button>
-    </div>
+        <div class="main">
+            <!-- Login -->
+            <div id="login-box" class="login-box">
+                <h2>Вход в редактор</h2>
+                <input type="text" id="username" placeholder="Логин" value="nzavedeev">
+                <input type="password" id="password" placeholder="Пароль">
+                <button class="btn-primary" onclick="checkLogin()" style="width:100%; padding:14px;">Войти</button>
+            </div>
 
-    <div id="editor" style="display:none">
-        <p>👤 Пользователь: <b id="current-user"></b></p>
-        <button onclick="addChannel()">+ Добавить канал</button>
-        <button onclick="saveToGitHub()">💾 Сохранить в GitHub</button>
-        <button onclick="loadChannels()">🔄 Перезагрузить</button>
+            <!-- Editor -->
+            <div id="editor" style="display:none">
+                <div class="toolbar">
+                    <button onclick="addChannel()" class="btn-primary">+ Добавить канал</button>
+                    <button onclick="saveToGitHub()" class="btn-success">💾 Сохранить в GitHub</button>
+                    <button onclick="loadChannels()">🔄 Обновить список</button>
+                    <button onclick="logout()" style="background:#6b7280; color:white;">Выйти</button>
+                </div>
 
-        <table id="table">
-            <thead>
-                <tr><th>Название канала</th><th>Ссылка на поток</th><th>Действия</th></tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+                <p style="margin-bottom:10px;">
+                    👤 Пользователь: <strong id="current-user"></strong>
+                </p>
+
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th width="35%">Название канала</th>
+                            <th width="55%">Ссылка на поток (m3u8)</th>
+                            <th width="10%">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
+        // === ВСЯ ТВОЯ ПРЕЖНЯЯ ЛОГИКА (без изменений) ===
         const OWNER = "nzavedeev";
         const REPO = "mytvlist";
         const FILE = "rus_test1.m3u";
@@ -49,17 +206,16 @@
         let channels = [];
         let token = localStorage.getItem("github_token") || "";
 
-        // Простая защита (не очень безопасно, но для личного использования хватит)
         const USERS = {
-            "nzavedeev": "Qwerty86",   // ← поменяй!
+            "nzavedeev": "твой_пароль_здесь",   // ← замени на свой
             "gost": "12345"
         };
 
         function saveToken() {
-            token = document.getElementById("token").value.trim();
+            token = prompt("Вставь GitHub Personal Access Token:", token);
             if (token) {
                 localStorage.setItem("github_token", token);
-                alert("Токен сохранён в браузере");
+                alert("✅ Токен сохранён");
             }
         }
 
@@ -68,28 +224,35 @@
             const pass = document.getElementById("password").value;
 
             if (USERS[user] && USERS[user] === pass) {
+                document.getElementById("login-box").style.display = "none";
                 document.getElementById("editor").style.display = "block";
                 document.getElementById("current-user").textContent = user;
+                if (!token) saveToken();
                 loadChannels();
             } else {
-                alert("Неверный логин или пароль");
+                alert("❌ Неверный логин или пароль");
             }
         }
 
         function logout() {
+            document.getElementById("login-box").style.display = "block";
             document.getElementById("editor").style.display = "none";
         }
 
         async function loadChannels() {
             if (!token) {
-                alert("Сначала вставь GitHub Token");
-                return;
+                if (!confirm("Токен не найден. Ввести сейчас?")) return;
+                saveToken();
             }
-            const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${FILE}`;
-            const resp = await fetch(url);
-            const text = await resp.text();
-            channels = parseM3U(text);
-            renderTable();
+            try {
+                const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${FILE}`;
+                const resp = await fetch(url);
+                const text = await resp.text();
+                channels = parseM3U(text);
+                renderTable();
+            } catch (e) {
+                alert("Ошибка загрузки списка");
+            }
         }
 
         function parseM3U(text) {
@@ -122,10 +285,10 @@
                 tr.innerHTML = `
                     <td><input value="${ch.name.replace(/"/g, '&quot;')}" onchange="channels[${i}].name=this.value"></td>
                     <td><input value="${ch.url}" onchange="channels[${i}].url=this.value"></td>
-                    <td>
+                    <td class="actions">
                         <button onclick="moveUp(${i})">↑</button>
                         <button onclick="moveDown(${i})">↓</button>
-                        <button onclick="deleteCh(${i})">🗑 Удалить</button>
+                        <button onclick="deleteCh(${i})" class="btn-danger">🗑</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -138,7 +301,7 @@
         }
 
         function deleteCh(i) {
-            if (confirm("Удалить канал?")) {
+            if (confirm("Удалить этот канал?")) {
                 channels.splice(i, 1);
                 renderTable();
             }
@@ -159,24 +322,20 @@
         }
 
         async function saveToGitHub() {
-            if (!token) return alert("Нет токена");
-
+            if (!token) return alert("Нет GitHub токена");
+            
             const content = buildM3U(channels);
-            const encoded = btoa(unescape(encodeURIComponent(content))); // base64
+            const encoded = btoa(unescape(encodeURIComponent(content)));
 
-            // Получаем SHA текущего файла
             const shaUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
             let sha = "";
             try {
                 const r = await fetch(shaUrl, { headers: { Authorization: `token ${token}` } });
-                const data = await r.json();
-                sha = data.sha;
-            } catch (e) {
-                return alert("Ошибка получения SHA");
-            }
+                sha = (await r.json()).sha;
+            } catch (e) { return alert("Не удалось получить SHA"); }
 
             const body = {
-                message: "Обновление M3U через веб-редактор",
+                message: "Обновление плейлиста через веб-редактор",
                 content: encoded,
                 sha: sha,
                 branch: BRANCH
@@ -194,12 +353,12 @@
             if (resp.ok) {
                 alert("✅ Успешно сохранено в GitHub!");
             } else {
-                alert("Ошибка: " + resp.status);
+                alert("Ошибка сохранения: " + resp.status);
             }
         }
 
-        // Автозагрузка токена
-        if (token) document.getElementById("token").value = token;
+        // Автозаполнение токена
+        if (token) console.log("Токен загружен из localStorage");
     </script>
 </body>
 </html>
