@@ -1,6 +1,8 @@
 #EXTM3U
 #EXTINF:-1,Hotel Info
 https://raw.githubusercontent.com/nzavedeev/mytvlist/main/grinland1.mp4
+#EXTINF:-1,Hotel Info2
+https://raw.githubusercontent.com/nzavedeev/mytvlist/main/grinland2.mp4
 #EXTINF:-1,Sochi Live HD
 http://serv30.vintera.tv:8081/sochi/sochi_stream/chunks.m3u8
 #EXTINF:-1,Россия 24
@@ -9,8 +11,6 @@ https://vgtrkregion-reg.cdnvideo.ru/vgtrk/0/russia24-hd/index.m3u8
 http://live.mediacdn.ru/sr1/arhis24/playlist.m3u8
 #EXTINF:-1,ТВЦ
 https://tvc-hls.cdnvideo.ru/tvc-res/smil:vd9221_2.smil/playlist.m3u8
-#EXTINF:-1,Hotel Info2
-https://raw.githubusercontent.com/nzavedeev/mytvlist/main/grinland2.mp4
 #EXTINF:-1,Первый канал
 http://31.148.48.15/Pervii_kanal_HD/index.m3u8
 #EXTINF:-1,РенТВ
