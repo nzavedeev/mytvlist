@@ -13,8 +13,6 @@ https://tvc-hls.cdnvideo.ru/tvc-res/smil:vd9221_2.smil/playlist.m3u8
 http://31.131.141.195:8000/play/2090/index.m3u8
 #EXTINF:-1,Суббота
 http://217.114.191.150/Subbota/index.m3u8
-#EXTINF:-1,Мультфильмы
-https://stream8.cinerama.uz/1440/tracks-v1a1/mono.m3u8
 #EXTINF:-1,Мультфильмы 2
 http://sirius.greenhosting.ru/MultimaniaRu/tracks-v1a1/mono.m3u8
 #EXTINF:-1,Рыжий
@@ -23,5 +21,3 @@ https://stream8.cinerama.uz/1407/tracks-v1a1/mono.m3u8
 http://158.101.222.193:88/georgia_play.php?id=black
 #EXTINF:-1,Ретро
 http://176.118.197.101/Retro/index.m3u8
-#EXTINF:-1,Детский
-https://player.smotrim.ru/iframe/stream/live_id/29d87e02-f367-48b1-b63e-6ce7923ab089
