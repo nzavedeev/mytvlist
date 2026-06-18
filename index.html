@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>M3U Редактор — rus_test1.m3u</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #666; padding: 8px; }
+        input { width: 100%; box-sizing: border-box; }
+        button { margin: 3px; padding: 5px 10px; }
+        .header { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Редактор M3U (rus_test1.m3u)</h1>
+
+    <div class="header">
+        <input type="password" id="token" placeholder="GitHub Personal Access Token" size="50">
+        <button onclick="saveToken()">Сохранить токен</button>
+        <button onclick="logout()">Сменить токен</button>
+        <br><br>
+        
+        <input type="text" id="username" placeholder="Логин (nzavedeev или gost)" value="nzavedeev">
+        <input type="password" id="password" placeholder="Пароль">
+        <button onclick="checkLogin()">Войти</button>
+    </div>
+
+    <div id="editor" style="display:none">
+        <p>👤 Пользователь: <b id="current-user"></b></p>
+        <button onclick="addChannel()">+ Добавить канал</button>
+        <button onclick="saveToGitHub()">💾 Сохранить в GitHub</button>
+        <button onclick="loadChannels()">🔄 Перезагрузить</button>
+
+        <table id="table">
+            <thead>
+                <tr><th>Название канала</th><th>Ссылка на поток</th><th>Действия</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        const OWNER = "nzavedeev";
+        const REPO = "mytvlist";
+        const FILE = "rus_test1.m3u";
+        const BRANCH = "main";
+
+        let channels = [];
+        let token = localStorage.getItem("github_token") || "";
+
+        // Простая защита (не очень безопасно, но для личного использования хватит)
+        const USERS = {
+            "nzavedeev": "Qwerty86",   // ← поменяй!
+            "gost": "12345"
+        };
+
+        function saveToken() {
+            token = document.getElementById("token").value.trim();
+            if (token) {
+                localStorage.setItem("github_token", token);
+                alert("Токен сохранён в браузере");
+            }
+        }
+
+        function checkLogin() {
+            const user = document.getElementById("username").value.trim();
+            const pass = document.getElementById("password").value;
+
+            if (USERS[user] && USERS[user] === pass) {
+                document.getElementById("editor").style.display = "block";
+                document.getElementById("current-user").textContent = user;
+                loadChannels();
+            } else {
+                alert("Неверный логин или пароль");
+            }
+        }
+
+        function logout() {
+            document.getElementById("editor").style.display = "none";
+        }
+
+        async function loadChannels() {
+            if (!token) {
+                alert("Сначала вставь GitHub Token");
+                return;
+            }
+            const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${FILE}`;
+            const resp = await fetch(url);
+            const text = await resp.text();
+            channels = parseM3U(text);
+            renderTable();
+        }
+
+        function parseM3U(text) {
+            const lines = text.split('\n');
+            const ch = [];
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line.startsWith('#EXTINF:')) {
+                    const name = line.split(',').pop().trim();
+                    const url = lines[++i] ? lines[i].trim() : '';
+                    ch.push({name, url});
+                }
+            }
+            return ch;
+        }
+
+        function buildM3U(channels) {
+            let out = "#EXTM3U\n";
+            for (let ch of channels) {
+                out += `#EXTINF:-1,${ch.name}\n${ch.url}\n`;
+            }
+            return out;
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector("#table tbody");
+            tbody.innerHTML = "";
+            channels.forEach((ch, i) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><input value="${ch.name.replace(/"/g, '&quot;')}" onchange="channels[${i}].name=this.value"></td>
+                    <td><input value="${ch.url}" onchange="channels[${i}].url=this.value"></td>
+                    <td>
+                        <button onclick="moveUp(${i})">↑</button>
+                        <button onclick="moveDown(${i})">↓</button>
+                        <button onclick="deleteCh(${i})">🗑 Удалить</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addChannel() {
+            channels.push({name: "Новый канал", url: "https://"});
+            renderTable();
+        }
+
+        function deleteCh(i) {
+            if (confirm("Удалить канал?")) {
+                channels.splice(i, 1);
+                renderTable();
+            }
+        }
+
+        function moveUp(i) {
+            if (i > 0) {
+                [channels[i], channels[i-1]] = [channels[i-1], channels[i]];
+                renderTable();
+            }
+        }
+
+        function moveDown(i) {
+            if (i < channels.length - 1) {
+                [channels[i], channels[i+1]] = [channels[i+1], channels[i]];
+                renderTable();
+            }
+        }
+
+        async function saveToGitHub() {
+            if (!token) return alert("Нет токена");
+
+            const content = buildM3U(channels);
+            const encoded = btoa(unescape(encodeURIComponent(content))); // base64
+
+            // Получаем SHA текущего файла
+            const shaUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+            let sha = "";
+            try {
+                const r = await fetch(shaUrl, { headers: { Authorization: `token ${token}` } });
+                const data = await r.json();
+                sha = data.sha;
+            } catch (e) {
+                return alert("Ошибка получения SHA");
+            }
+
+            const body = {
+                message: "Обновление M3U через веб-редактор",
+                content: encoded,
+                sha: sha,
+                branch: BRANCH
+            };
+
+            const resp = await fetch(shaUrl, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `token ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (resp.ok) {
+                alert("✅ Успешно сохранено в GitHub!");
+            } else {
+                alert("Ошибка: " + resp.status);
+            }
+        }
+
+        // Автозагрузка токена
+        if (token) document.getElementById("token").value = token;
+    </script>
+</body>
+</html>
