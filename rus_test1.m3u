@@ -11,6 +11,8 @@ http://serv30.vintera.tv:8081/sochi/sochi_stream/chunks.m3u8
 https://vgtrkregion-reg.cdnvideo.ru/vgtrk/0/russia24-hd/index.m3u8
 #EXTINF:-1,ТВЦ
 https://tvc-hls.cdnvideo.ru/tvc-res/smil:vd9221_2.smil/playlist.m3u8
+#EXTINF:-1,ТНТ
+http://31.131.141.195:8000/play/2090/index.m3u8
 #EXTINF:-1,Суббота
 http://217.114.191.150/Subbota/index.m3u8
 #EXTINF:-1,Мультфильмы
