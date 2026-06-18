@@ -19,3 +19,5 @@ http://217.114.191.150/Subbota/index.m3u8
 https://stream8.cinerama.uz/1440/tracks-v1a1/mono.m3u8
 #EXTINF:-1,Мультфильмы 2
 http://sirius.greenhosting.ru/MultimaniaRu/tracks-v1a1/mono.m3u8
+#EXTINF:-1,Музыка Первого
+http://158.101.222.193:88/georgia_play.php?id=black
