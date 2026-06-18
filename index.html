@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV Playlist Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loginBlock">
+    <h2>Вход</h2>
+
+    <input
+        type="password"
+        id="token"
+        placeholder="GitHub Token">
+
+    <button id="loginBtn">
+        Войти
+    </button>
+
+    <div id="loginStatus"></div>
+</div>
+
+<div id="app" style="display:none">
+
+    <h1>IPTV Playlist Manager</h1>
+
+    <div id="userInfo"></div>
+
+    <table id="channelTable">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+                <th>Поток</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+
+        <tbody id="channelBody">
+        </tbody>
+
+    </table>
+
+    <button id="addChannel">
+        Добавить канал
+    </button>
+
+    <button id="savePlaylist">
+        Сохранить
+    </button>
+
+    <div id="editorPanel" style="display:none">
+
+        <h3>Второй пользователь</h3>
+
+        <input
+            id="editorLogin"
+            placeholder="GitHub login">
+
+        <button id="saveEditor">
+            Сохранить пользователя
+        </button>
+
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
