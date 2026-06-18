@@ -13,5 +13,7 @@ http://live.mediacdn.ru/sr1/arhis24/playlist.m3u8
 https://tvc-hls.cdnvideo.ru/tvc-res/smil:vd9221_2.smil/playlist.m3u8
 #EXTINF:-1,Первый канал
 http://31.148.48.15/Pervii_kanal_HD/index.m3u8
-#EXTINF:-1,Новый канал
+#EXTINF:-1,Мультфильмы
 https://stream8.cinerama.uz/1440/tracks-v1a1/mono.m3u8
+#EXTINF:-1,Мультфильмы 2
+http://sirius.greenhosting.ru/MultimaniaRu/tracks-v1a1/mono.m3u8
