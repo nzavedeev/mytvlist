@@ -13,7 +13,7 @@ https://tvc-hls.cdnvideo.ru/tvc-res/smil:vd9221_2.smil/playlist.m3u8
 http://31.131.141.195:8000/play/2090/index.m3u8
 #EXTINF:-1,Суббота
 http://217.114.191.150/Subbota/index.m3u8
-#EXTINF:-1,Мультфильмы 2
+#EXTINF:-1,Мультимания
 http://sirius.greenhosting.ru/MultimaniaRu/tracks-v1a1/mono.m3u8
 #EXTINF:-1,Рыжий
 https://stream8.cinerama.uz/1407/tracks-v1a1/mono.m3u8
