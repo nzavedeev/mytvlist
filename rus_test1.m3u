@@ -29,3 +29,5 @@ http://46.32.176.50/eurosport2/index.m3u8
 http://193.25.8.59:8000/rusong
 #EXTINF:-1,Geographic HD
 https://stream8.cinerama.uz/1041/tracks-v1a1/mono.m3u8
+#EXTINF:-1,Смотрим (Кино и сериалы)
+https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-01.smil/tracks-v5a1/mono.m3u8
